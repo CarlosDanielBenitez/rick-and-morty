@@ -1,7 +1,9 @@
-.layoutApp{
-    background-color: gray;
+.layoutApp {
+    background-color: black;
 }
+
 /* cards */
+
 .characters-container {
     
     display: flex;
@@ -9,15 +11,17 @@
     width: 100%;
     justify-content: center;
     gap: 1rem;
+     max-width: 1000px;
 }
 
 .character-card {
-    height: 180px;
-    width: 180px;
+
+    height: 150px;
+    width: 130px;
     display: flex;
+
     flex-direction: column;
     border-radius: 10px;
-    
     position: relative;
 }
 
@@ -49,45 +53,71 @@
     height: 100%;
     border-radius: 10px;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 80%, rgba(0, 0, 0, 0.9) 100%);
-   
+
     z-index: 1;
 }
 
 
 /* paginations */
 
-.boxPagination{
+
+.boxPagination {
     display: flex;
+    align-items: center;
     justify-content: center;
     column-gap: .4rem;
     list-style: none;
-
     padding: 1rem;
 }
 
-
-.boxPagination .page-link{
-    color: black;
-    background-color: white;
-    border-color: black;
-    padding: .1rem;
-    border-radius: 5px;
-text-decoration: none;
-  }
- .pageCurrent{
+.boxPagination .pageCurrent {
+    background-color: black;
+    color: white;
     display: flex;
+}
+.currentPageNumber{
+    background-color: blue;
+    padding: 0 6px;
+}
+.boxPagination .pageCurrent .page-link {
+    color: #ffffff;
+    
+}
 
-  }
-  
-  .boxPagination .page-link:hover {
-    color: white;
-    background-color: #007bff;
-    border-color: #007bff;
-    cursor: pointer;
-  }
-  
-  .boxPagination .page-item.active .page-link {
-    background-color: #007bff;
-    border-color: #007bff;
-    color: white;
-  }
+.boxPagination .pagePrev {
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+    padding: 2px;
+    font-size: 14px;
+    text-decoration: none;
+    font-weight: 500;
+    
+}
+.boxPagination .pagePrev .page-link {
+    color: black;
+    text-decoration: none;
+    padding: 2px; 
+} 
+.boxPagination .pagePrev .page-link:hover , .boxPagination .pageNext .page-link:hover{
+
+color: blue;
+    transition: all .6s ease;
+   
+    
+}
+.boxPagination .pageNext {
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 2px; 
+
+}
+
+.boxPagination .pageNext .page-link {
+    text-decoration: none;
+    color: black;
+
+}

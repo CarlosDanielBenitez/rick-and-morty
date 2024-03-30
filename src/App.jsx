@@ -24,11 +24,11 @@ const GET_CHARACTERS = gql`
         image
       }
     }
-  }
-`;
+  } `;
 
-//filter
-function Characters({ filter }) {
+
+
+function Characters() {
   const [currentPage, setCurrentPage] = useState(1);
   const { loading, error, data } = useQuery(GET_CHARACTERS, {
     variables: { page: currentPage }
@@ -43,7 +43,7 @@ function Characters({ filter }) {
 
   return (
     //cards
-    <div>
+    <div className="gridContainer">
       <div className="characters-container">
         {data.characters.results.map((character) => (
           <div key={character.id} className="character-card">
@@ -59,7 +59,7 @@ function Characters({ filter }) {
       </div>
  
         <PaginationComponent
-        
+         
           currentPage={currentPage}
           totalPages={data.characters.info.pages}
           onPageChange={handlePageChange}
@@ -80,7 +80,7 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <div className="layoutApp">
-        <h2 >Rick and Morty</h2>
+        <h2 className="text-center">Rick and Morty</h2>
         <div>
           <h3>Filters</h3>
           {/* 
