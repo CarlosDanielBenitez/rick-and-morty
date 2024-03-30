@@ -1,0 +1,93 @@
+.layoutApp{
+    background-color: gray;
+}
+/* cards */
+.characters-container {
+    
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.character-card {
+    height: 180px;
+    width: 180px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    
+    position: relative;
+}
+
+
+
+.character-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    z-index: 0;
+
+}
+
+.character-card p {
+    position: absolute;
+    bottom: 5px;
+    left: 10px;
+    right: 10px;
+    color: white;
+    text-align: center;
+    z-index: 2;
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 80%, rgba(0, 0, 0, 0.9) 100%);
+   
+    z-index: 1;
+}
+
+
+/* paginations */
+
+.boxPagination{
+    display: flex;
+    justify-content: center;
+    column-gap: .4rem;
+    list-style: none;
+
+    padding: 1rem;
+}
+
+
+.boxPagination .page-link{
+    color: black;
+    background-color: white;
+    border-color: black;
+    padding: .1rem;
+    border-radius: 5px;
+text-decoration: none;
+  }
+ .pageCurrent{
+    display: flex;
+
+  }
+  
+  .boxPagination .page-link:hover {
+    color: white;
+    background-color: #007bff;
+    border-color: #007bff;
+    cursor: pointer;
+  }
+  
+  .boxPagination .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+  }
