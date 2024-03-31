@@ -1,27 +1,25 @@
 .layoutApp {
-    background-color: black;
+    background-color: gray;
+
 }
 
 /* cards */
-
 .characters-container {
-    
     display: flex;
     flex-wrap: wrap;
     width: 100%;
-    justify-content: center;
+    justify-content:center;
+    align-items: center;
     gap: 1rem;
-     max-width: 1000px;
 }
 
 .character-card {
-
-    height: 150px;
-    width: 130px;
+    height: 180px;
+    width: 180px;
     display: flex;
-
     flex-direction: column;
     border-radius: 10px;
+    background-color: blue;
     position: relative;
 }
 
@@ -32,7 +30,6 @@
     height: 100%;
     border-radius: 10px;
     z-index: 0;
-
 }
 
 .character-card p {
@@ -43,6 +40,7 @@
     color: white;
     text-align: center;
     z-index: 2;
+    font-size: 14px;
 }
 
 .image-overlay {
@@ -53,14 +51,11 @@
     height: 100%;
     border-radius: 10px;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 80%, rgba(0, 0, 0, 0.9) 100%);
-
     z-index: 1;
 }
 
 
-/* paginations */
-
-
+/* paginations buttons*/
 .boxPagination {
     display: flex;
     align-items: center;
@@ -75,49 +70,128 @@
     color: white;
     display: flex;
 }
-.currentPageNumber{
+
+.currentPageNumber {
     background-color: blue;
     padding: 0 6px;
 }
+
 .boxPagination .pageCurrent .page-link {
     color: #ffffff;
-    
 }
 
 .boxPagination .pagePrev {
     background-color: white;
     color: black;
     border-radius: 5px;
-    padding: 2px;
     font-size: 14px;
     text-decoration: none;
     font-weight: 500;
-    
+    padding: 2px 7px;
+
 }
+
 .boxPagination .pagePrev .page-link {
     color: black;
     text-decoration: none;
-    padding: 2px; 
-} 
-.boxPagination .pagePrev .page-link:hover , .boxPagination .pageNext .page-link:hover{
 
-color: blue;
-    transition: all .6s ease;
-   
-    
 }
+
+
 .boxPagination .pageNext {
     background-color: white;
     color: black;
     border-radius: 5px;
     font-size: 14px;
     font-weight: 500;
-    padding: 2px; 
+    padding: 2px 7px;
 
 }
 
 .boxPagination .pageNext .page-link {
     text-decoration: none;
     color: black;
+}
+
+.boxPagination .pagePrev .page-link:hover,
+.boxPagination .pageNext .page-link:hover {
+    color: blue;
+    transition: all .6s ease;
+}
+
+
+/* search components */
+.search-container {
+    display: flex;
+    justify-content: center;
+    padding: 1rem 0;
+    width: 100%;
+}
+
+.search-container input {
+    border: white solid 1px;
+    height: 30px;
+    width: 90%;
+    border-radius: 7px 0 0 7px;
+    background-color: black;
+    color: white;
+    font-size: 14px;
+    max-width: 59rem;
+    
+    
+}
+
+.search-icon {
+    background-color: white;
+    border-radius: 0 7px 7px 0;
+    padding: 5px;
+
+}
+
+/* filter component */
+.contentFilterReset{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    flex-wrap: wrap;
+    
+}
+.filterContainer {
+    
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom:  1.5rem;
+    text-align: start;
+    align-items: center;
+    width: 100%;
+    column-gap: 1rem;
+}
+
+.filterContainerSelect{
+display: flex;
+justify-content: center;
+width: 75%;
+column-gap: 1rem;
+}
+ .filterSelect {
+    font-size: 14px;
+    height: 25px;
+    border: white solid 1px;
+    color: white;
+    display: flex;
+
+}
+/* btn reset */
+/* .filterReset{
+
+} */
+
+.filterReset p {
+    font-size: 14px;
+    background-color: gray;
+    color: black;
+    border-radius: 25px;
+
 
 }
