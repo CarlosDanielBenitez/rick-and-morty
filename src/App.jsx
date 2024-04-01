@@ -33,9 +33,8 @@ const GET_CHARACTERS = gql`
 
 
 
-// icon color
+// icon color styles
 const iconColor = {
-
   width: '100%', // Ancho completo
 
   '&:hover': {
@@ -44,17 +43,16 @@ const iconColor = {
   '&:focus': {
     backgroundColor: 'transparent', // Fondo transparente al estar enfocado
     boxShadow: 'none', // Sin sombra
-  },
-  '& .MuiSelect-root': {
-    color: 'white', // Color del texto en blanco
 
   },
-  '& .MuiSelect-icon': {
-    color: 'white', // Color del ícono en blanco
+  borderRadius: '.8rem',
+  fontSize: "14px",
+  '& .MuiInputBase-input, & .MuiSvgIcon-root': {
+    color: 'white',
   },
+};
 
 
-}
 // all caracters 
 function Characters({ searchTerm, statusFilter, speciesFilter, genderFilter }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -71,8 +69,8 @@ function Characters({ searchTerm, statusFilter, speciesFilter, genderFilter }) {
       <div className="gridContainer">
         <div className="characters-container">
           {[...Array(20)].map((_, index) => (
-            <div key={index} className="character-card">   
-            {/* background card */}
+            <div key={index} className="character-card">
+              {/* background card */}
               <Skeleton variant="rect" width={180} height={180} />
               <Skeleton />
             </div>
@@ -157,11 +155,12 @@ function App() {
           />
           <SearchIcon className="search-icon" sx={{ fontSize: 30 }} />
         </div>
-        
-          <div className="filterContainer">
 
-            <div className="filterContainerSelect">
+        <div className="filterContainer">
+
+          <div className="filterContainerSelect">
             <Select
+
               sx={iconColor}
               className="filterSelect"
               value={statusFilter}
@@ -179,7 +178,6 @@ function App() {
 
             <Select
               sx={iconColor}
-
               className="filterSelect"
               value={speciesFilter}
               onChange={handleSpeciesChange}
@@ -211,12 +209,15 @@ function App() {
               <MenuItem value="genderless">Genderless</MenuItem>
               <MenuItem value="unknown">Unknown</MenuItem>
             </Select>
-            </div>
-            <IconButton className="filterReset" onClick={handleResetFilters} aria-label="reset filters">
+          </div>
+          <div className="filterContainerReset">
+
+            <IconButton sx={{ padding: "0" }} onClick={handleResetFilters} aria-label="reset filters">
               <p>Reset filters</p>
             </IconButton>
           </div>
-        
+        </div>
+
         <Characters searchTerm={searchTerm} statusFilter={statusFilter} speciesFilter={speciesFilter} genderFilter={genderFilter} />
 
       </div>
