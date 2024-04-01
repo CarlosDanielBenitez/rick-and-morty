@@ -2,6 +2,14 @@
     background-color: black;
 
 }
+*:root {
+    --colorPrimary: #0206E0;
+    --colorSecondary: #0206E0;
+    --colorTertiary: #0206E0;
+    --maxWInput:  58.5rem;
+    --maxWFilterSelect:  54rem;
+}
+
 
 /* cards */
 .characters-container {
@@ -19,7 +27,7 @@
     display: flex;
     flex-direction: column;
     border-radius: 10px;
-    background-color: blue;
+    background-color: var(--colorSecondary);
     position: relative;
 }
 
@@ -63,17 +71,17 @@
     column-gap: .4rem;
     list-style: none;
     padding: 1rem;
-  
 }
 
 .boxPagination .pageCurrent {
+    width: 95px;
     background-color: black;
     color: white;
     display: flex;
 }
 
 .currentPageNumber {
-    background-color: blue;
+    background-color: var(--colorSecondary);
     padding: 0 6px;
 }
 
@@ -116,7 +124,7 @@
 
 .boxPagination .pagePrev .page-link:hover,
 .boxPagination .pageNext .page-link:hover {
-    color: blue;
+    color:  var(--colorSecondary);;
     transition: all .6s ease;
 }
 
@@ -137,10 +145,11 @@
     background-color: black;
     color: white;
     font-size: 14px;
-    max-width: 58.5rem;
+    max-width:var(--maxWInput);
     
     
 }
+
 
 .search-icon {
     background-color: white;
@@ -174,7 +183,7 @@
     display: flex;
     justify-content: center;
     width: 100%;
-    max-width: 54rem;
+    max-width: var(--maxWFilterSelect);
     column-gap: 1rem;
     
 }
@@ -205,4 +214,37 @@
 
     
     
+}
+@media screen and (max-width: 768px) {
+    .filterContainerSelect{
+        flex-direction: column;
+    }
+}
+
+
+ /* All details characters*/
+.charactersDetailsContainer{
+    display: flex;
+    width: 540px;
+    height: 300px;
+    /* background-color: black; */
+    text-align: center;
+}
+.charactersDetailsImg{
+    width: 300px;
+}
+.charactersDetailsContainerImg img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+.charactersDetails{
+background-color: black;
+color: white;
+text-align: center;
+width: 100%;
+display: flex;
+flex-direction: column;
+justify-content: space-evenly;
 }

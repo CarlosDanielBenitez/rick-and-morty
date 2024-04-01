@@ -2,12 +2,17 @@ import React, { useState } from "react";
 import { ApolloClient, ApolloProvider, InMemoryCache, gql, useQuery } from "@apollo/client";
 import PaginationComponent from "./components/PaginationComponent";
 import Skeleton from '@mui/material/Skeleton';
-import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Modal from '@mui/material/Modal'; // Importar componente Modal de Material-UI
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import "./App.css";
+import SearchBar from "./components/SearchBar";
+import CloseIcon from '@mui/icons-material/Close';
+
 
 const client = new ApolloClient({
   uri: 'https://rickandmortyapi.com/graphql',
@@ -26,11 +31,21 @@ const GET_CHARACTERS = gql`
         id
         name
         image
+        status
+        gender
+        species
+        type
+        location {
+          name
+          dimension
+        }
+        origin {
+          name
+        }
       }
     }
   }
 `;
-
 
 
 // icon color styles
@@ -53,9 +68,48 @@ const iconColor = {
 };
 
 
-// all caracters 
+function CharacterDetails({ character, onClose }) {
+  return (
+    <Modal open={!!character} onClose={onClose}>
+      <Box className="charactersDetailsContainer" sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',  bgcolor: 'none', boxShadow: 24  }}>
+      <IconButton sx={{ position: 'absolute', top: 0, right: 0, borderRadius: '50%', backgroundColor: 'gray', color: 'black' , padding:"3px"}} onClick={onClose}>
+          <CloseIcon  sx={{ width:".9rem", height:".9rem"}}/>
+        </IconButton>
+        <div className="charactersDetailsImg">
+        <img src={character?.image} alt={character?.name} />
+        </div>
+        <div className="charactersDetails">
+        <Typography variant="h5" gutterBottom component="div">
+          {character?.name}
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          Status: {character?.status}
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          Gender: {character?.gender}
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          Species: {character?.species}
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          Type: {character?.type || 'Unknown'}
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          Location: {character?.location?.name || 'Unknown'} ({character?.location?.dimension || 'Unknown'})
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          Origin: {character?.origin?.name || 'Unknown'}
+        </Typography>
+        </div>
+       
+      </Box>
+    </Modal>
+  );
+}
+
 function Characters({ searchTerm, statusFilter, speciesFilter, genderFilter }) {
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedCharacter, setSelectedCharacter] = useState(null); // Estado para el personaje seleccionado
   const { loading, error, data } = useQuery(GET_CHARACTERS, {
     variables: { page: currentPage, name: searchTerm, status: statusFilter, species: speciesFilter, gender: genderFilter }
   });
@@ -64,57 +118,43 @@ function Characters({ searchTerm, statusFilter, speciesFilter, genderFilter }) {
     setCurrentPage(page);
   };
 
-  if (loading) {
-    return (
-      <div className="gridContainer">
-        <div className="characters-container">
-          {[...Array(20)].map((_, index) => (
-            <div key={index} className="character-card">
-              {/* background card */}
-              <Skeleton variant="rect" width={180} height={180} />
-              <Skeleton />
-            </div>
-          ))}
-        </div>
-        <PaginationComponent
-          currentPage={currentPage}
-          onPageChange={handlePageChange}
-        />
-      </div>
-    );
-  }
-
-  if (error) return <p>Error: {error.message}</p>;
+  const handleCharacterClick = (character) => {
+    setSelectedCharacter(character);
+  };
 
   return (
     <div className="gridContainer">
       <div className="characters-container">
-        {data.characters.results.map((character) => (
-          <div key={character.id} className="character-card">
-            <div className="image-overlay"></div>
-            <img
-              src={character.image}
-              alt={character.name}
-              className="character-image"
-            />
-            <p>{character.name}</p>
-          </div>
-        ))}
+        {loading ? (
+          [...Array(20)].map((_, index) => (
+            <div key={index} className="character-card">
+              <Skeleton variant="rect" width={180} height={180} />
+              <Skeleton />
+            </div>
+          ))
+        ) : error ? (
+          <p>Error: {error.message}</p>
+        ) : (
+          data.characters.results.map((character) => (
+            <div key={character.id} className="character-card" onClick={() => handleCharacterClick(character)}>
+              <div className="image-overlay"></div>
+              <img src={character.image} alt={character.name} className="character-image" />
+              <p>{character.name}</p>
+            </div>
+          ))
+        )}
       </div>
-
-      {/* all paginations */}
       <PaginationComponent
         currentPage={currentPage}
-        totalPages={data.characters.info.pages}
+        totalPages={data?.characters?.info?.pages}
         onPageChange={handlePageChange}
       />
+      <CharacterDetails character={selectedCharacter} onClose={() => setSelectedCharacter(null)} />
     </div>
   );
 }
 
 function App() {
-
-  // all the constants and search event
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [speciesFilter, setSpeciesFilter] = useState('');
@@ -146,36 +186,23 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <div className="layoutApp">
-        <div className="search-container">
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={handleSearchChange}
-
-          />
-          <SearchIcon className="search-icon" sx={{ fontSize: 30 }} />
-        </div>
-
+        <SearchBar searchTerm={searchTerm} onSearchChange={handleSearchChange} />
         <div className="filterContainer">
-
           <div className="filterContainerSelect">
             <Select
-
               sx={iconColor}
               className="filterSelect"
               value={statusFilter}
               onChange={handleStatusChange}
               displayEmpty
               inputProps={{ 'aria-label': 'status' }}
-              IconComponent={ExpandMoreIcon} // Icono del filtro
-
+              IconComponent={ExpandMoreIcon}
             >
               <MenuItem value="">Status...</MenuItem>
               <MenuItem value="alive">Alive</MenuItem>
               <MenuItem value="dead">Dead</MenuItem>
               <MenuItem value="unknown">Unknown</MenuItem>
             </Select>
-
             <Select
               sx={iconColor}
               className="filterSelect"
@@ -183,7 +210,7 @@ function App() {
               onChange={handleSpeciesChange}
               displayEmpty
               inputProps={{ 'aria-label': 'species' }}
-              IconComponent={ExpandMoreIcon} // filter icon
+              IconComponent={ExpandMoreIcon}
             >
               <MenuItem value="">Species...</MenuItem>
               <MenuItem value="human">Human</MenuItem>
@@ -192,7 +219,6 @@ function App() {
               <MenuItem value="robot">Robot</MenuItem>
               <MenuItem value="unknown">Unknown</MenuItem>
             </Select>
-
             <Select
               sx={iconColor}
               className="filterSelect"
@@ -200,8 +226,7 @@ function App() {
               onChange={handleGenderChange}
               displayEmpty
               inputProps={{ 'aria-label': 'gender' }}
-              IconComponent={ExpandMoreIcon} // filter icon
-
+              IconComponent={ExpandMoreIcon}
             >
               <MenuItem value="">Genders...</MenuItem>
               <MenuItem value="female">Female</MenuItem>
@@ -211,15 +236,12 @@ function App() {
             </Select>
           </div>
           <div className="filterContainerReset">
-
             <IconButton sx={{ padding: "0" }} onClick={handleResetFilters} aria-label="reset filters">
               <p>Reset filters</p>
             </IconButton>
           </div>
         </div>
-
         <Characters searchTerm={searchTerm} statusFilter={statusFilter} speciesFilter={speciesFilter} genderFilter={genderFilter} />
-
       </div>
     </ApolloProvider>
   );
